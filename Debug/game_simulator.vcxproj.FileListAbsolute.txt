@@ -1,2 +1,4 @@
 C:\Users\Goblin\Desktop\game_simulator\game_simulator\Debug\game_simulator.exe
 C:\Users\Goblin\Desktop\game_simulator\game_simulator\Debug\game_simulator.pdb
+C:\Users\Goblin\Desktop\game_simulator\Debug\game_simulator.exe
+C:\Users\Goblin\Desktop\game_simulator\Debug\game_simulator.pdb
