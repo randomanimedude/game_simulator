@@ -45,18 +45,21 @@
 		for (Player player : PlayerList)
 			if (player.GetName() == Name)
 				return player;
+		return Player(-1,"error",-1000);
 	}
 	Player PlayerManager::GetPlayerById(int Id)
 	{
 		for (Player player : PlayerList)
 			if (player.GetId() == Id)
 				return player;
+		return Player(-1, "error", -1000);
 	}
 	std::string PlayerManager::ShowPlayerInfo(int Id) const
 	{
 		for (Player player : PlayerList)
 			if (player.GetId() == Id)
 				return "|   " + std::to_string(Id) + "\t|   " + player.GetName() + "\t|   " + std::to_string(player.GetRank()) + "\t|";
+		return "error";
 	}
 
 	void HeroManager::CreateHero(Hero hero)
@@ -81,18 +84,21 @@
 		for (Hero hero : HeroList)
 			if (hero.GetName() == Name)
 				return hero;
+		return Hero(-1,"error",-1000,-1000);
 	}
 	Hero HeroManager::GetHeroById(int Id)
 	{
 		for (Hero hero : HeroList)
 			if (hero.GetId() == Id)
 				return hero;
+		return Hero(-1, "error", -1000, -1000);
 	}
 	std::string HeroManager::ShowHeroInfo(int Id) const
 	{
 		for (Hero hero : HeroList)
 			if (hero.GetId() == Id)
-				return "|   " + std::to_string(Id) + "\t|   " + hero.GetName() + "\t|   " + std::to_string(hero.GetHP()) + "\t|   " + std::to_string(hero.GetDamage()) + "\t|";
+				return "|   " + std::to_string(Id) + "\t|   " + hero.GetName() + "\t|  " + std::to_string(hero.GetHP()) + "\t|  " + std::to_string(hero.GetDamage()) + "\t|";
+		return "error";
 	}
 
 	Team::Team(std::string Name, TeamPlayer players[])

@@ -4,9 +4,10 @@
 class View
 {
 public:
+	View() {};
 	View(Controller controller) { this->controller = controller; }
 
-	char MainMenu();
+	void MainMenu();
 	void PlayerList();
 	void HeroList();
 	void TeamList();

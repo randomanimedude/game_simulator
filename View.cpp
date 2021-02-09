@@ -2,30 +2,29 @@
 #include <iostream>
 #include "View.h"
 
-
 using namespace std;
 
-int View::MainMenu()
+void View::MainMenu()
 {
-	cout << "1)Player list\n\
-			2)Hero list\n\
-			3)Team list\n\
-			4)Session list\n\
-			Choose your destiny: ";
+	cout << "1)Player list\n"
+		<< "2)Hero list\n"
+		<< "3)Team list\n"
+		<< "4)Session list\n"
+		<< "Choose your destiny: ";
 	char input;
 	cin >> input;
 	switch (input)
 	{
-	case 1:
+	case '1':
 		PlayerList();
 		break;
-	case 2:
+	case '2':
 		HeroList();
 		break;
-	case 3:
+	case '3':
 		TeamList();
 		break;
-	case 4:
+	case '4':
 		SessionList();
 		break;
 	default:
@@ -35,29 +34,56 @@ int View::MainMenu()
 
 void View::PlayerList()
 {
-	cout<<controller.GetPlayerList() << "Add new Player?(Y/N): ";
+	cout<<controller.GetPlayerList() << "1)Add new Player\n"
+									<<"2)Delete Player\n"
+									<<"3)Back\n"
+									<<"Choise: ";
 	char input;
 	cin >> input;
-	if (input == 'y' || input == 'Y')
+	switch (input)
+	{
+	case '1':
 		controller.AddNewPlayer();
+		break;
+	case '2':
+		controller.DeletePlayer();
+	}
 }
 
 void View::HeroList()
 {
-	cout << controller.GetHeroList() << "Add new Hero?(Y/N): ";
+	cout << controller.GetHeroList() << "1)Add new Hero\n"
+		<< "2)Delete Hero\n"
+		<< "3)Back\n"
+		<< "Choise: ";
 	char input;
 	cin >> input;
-	if (input == 'y' || input == 'Y')
+	switch (input)
+	{
+	case '1':
 		controller.AddNewHero();
+		break;
+	case '2':
+		controller.DeleteHero();
+	}
 }
 
 void View::TeamList()
 {
-	cout << controller.GetTeamList() << "Add new Team?(Y/N): ";
+	cout << controller.GetTeamList() << "1)Create new Team\n"
+		<< "2)Delete Team\n"
+		<< "3)Back\n"
+		<< "Choise: ";
 	char input;
 	cin >> input;
-	if (input == 'y' || input == 'Y')
+	switch (input)
+	{
+	case '1':
 		controller.AddNewTeam();
+		break;
+	case '2':
+		controller.DeleteTeam();
+	}
 }
 
 void View::SessionList()

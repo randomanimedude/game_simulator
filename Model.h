@@ -47,6 +47,8 @@ public:
 	void CreatePlayer(int, std::string, int);
 	void DeletePlayer(int);
 
+	std::list<Player> GetPlayerList() { return PlayerList; }
+
 	Player GetPlayerByName(std::string);
 	Player GetPlayerById(int);
 
@@ -62,6 +64,8 @@ public:
 	void CreateHero(Hero);
 	void CreateHero(int, std::string, int, int);
 	void DeleteHero(int);
+
+	std::list<Hero> GetHeroList() { return HeroList; }
 
 	Hero GetHeroByName(std::string);
 	Hero GetHeroById(int);
