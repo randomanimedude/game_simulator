@@ -12,10 +12,10 @@ Controller::Controller(PlayerManager &playerManager, HeroManager &heroManager, T
 
 std::string Controller::GetPlayerList()
 {
-	std::string rez="\n _______________________________________\n|  Id\t|   Name\t|   Rank\t|\n|_______________________________________|\n";
+	std::string rez="\n _______________________________\n|  Id\t|   Name\t| Rank\t|\n|_______________________________|\n";
 	for (auto player : playerManager->GetPlayerList())
 		rez += playerManager->ShowPlayerInfo(player.GetId()) + '\n';
-	rez += "|_______________________________________|\n";
+	rez += "|_______________________________|\n";
 	if (playerManager->GetPlayerList().empty())
 		rez = "\nPlayer list is empty!\n\n";
 	return rez;
@@ -35,10 +35,10 @@ std::string Controller::GetHeroList()
 std::string Controller::GetTeamList()
 {
 	std::string rez = "\n";
-	std::string line = "_______________________________________________________________________________";
+	std::string line = "_______________________________________________________________________";
 	for (Team team : teamManager->GetTeamList())
 	{		
-		rez += " " + line + "\n|  \t\t\tTeam\t  " + team.GetName() +"\t\t\t\t\t|\n|" + line + "|\n" + teamManager->GetTeamInfo(team.GetName(), *playerManager, *heroManager) + "|" + line + "|\n";
+		rez += " " + line + "\n|  \t\t\tTeam\t  " + team.GetName() +"\t\t\t\t|\n|" + line + "|\n" + teamManager->GetTeamInfo(team.GetName(), playerManager, heroManager) + "|" + line + "|\n";
 	}
 	if (teamManager->GetTeamList().empty())
 		rez = "\nTeam list is empty!\n\n";
@@ -47,9 +47,18 @@ std::string Controller::GetTeamList()
 
 std::string Controller::GetSessionList()
 {
-	std::string rez = "\n";
+	std::string line = "_______________________________________________________________________";
+	std::string rez = "";
 	for (Session session : gameManager->GetGameSessions())
+	{
+		rez += "\n " + line + "\n";
 		rez += session.GetSessionInformation() + "\n";
+		rez += "|" + line + "|" + "\n|  \t\t\tTeam\t  " + session.GetTeamOne().GetName() + "\t\t\t\t|\n|" + line + "|\n";
+		rez += teamManager->GetTeamInfo(session.GetTeamOne(), playerManager, heroManager);
+		rez += "|" + line + "|" + "\n|  \t\t\tTeam\t  " + session.GetTeamTwo().GetName() + "\t\t\t\t|\n|" + line + "|\n";
+		rez += teamManager->GetTeamInfo(session.GetTeamTwo(), playerManager, heroManager);
+		rez += "|" + line + "|\n" + session.GetWinnerInformation() + "\n|" + line + "|\n\n";
+	}
 	if (gameManager->GetGameSessions().empty())
 		rez = "\nNo games to display\n";
 	return rez;
@@ -100,8 +109,6 @@ void Controller::DeletePlayer(int Id)
 void Controller::DeleteHero(int Id)
 {
 	heroManager->DeleteHero(Id);
-	/*for(Player player: playerManager->GetPlayerList())
-		if(player)*/
 }
 
 void Controller::DeleteTeam(std::string name)

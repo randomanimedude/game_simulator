@@ -105,7 +105,8 @@ public:
 	TeamManager() {};
 	void GenerateNewTeam(Team);
 	void DeleteTeamByName(std::string);
-	std::string GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager);
+	std::string GetTeamInfo(std::string, const PlayerManager*, const HeroManager*);
+	std::string GetTeamInfo(Team, const PlayerManager*, const HeroManager*);
 	std::list<Team> GetTeamList() { return TeamList; };
 
 private:
@@ -120,6 +121,8 @@ public:
 
 	void CalculateWinner(std::string time);
 
+	Team GetTeamOne();
+	Team GetTeamTwo();
 	std::string GetWinnerInformation();
 	std::string GetSessionInformation();
 
