@@ -30,7 +30,14 @@ std::string Controller::GetHeroList()
 
 std::string Controller::GetTeamList()
 {
-	return " ";
+	std::string rez = "";
+	std::string line = "_______________________________________________________________________________";
+	for (Team team : teamManager->GetTeamList())
+
+	{		
+		rez += " " + line + "\n|  \t\t\tTeam\t  " + team.GetName() +"\t\t\t\t\t|\n|" + line + "|\n" + teamManager->GetTeamInfo(team.GetName(), *playerManager, *heroManager) + "|" + line + "|\n";
+	}
+	return rez;
 }
 
 std::string Controller::GetSessionList()

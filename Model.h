@@ -80,13 +80,13 @@ struct TeamPlayer
 {
 	TeamPlayer() {};
 
-	const Hero* hero;
-	const Player* player;
+	Hero hero;
+	Player player;
 };
 class Team
 {
 public:
-	Team(std::string, TeamPlayer[]);
+	Team(std::string, Player[], std::list<Hero>);
 
 	std::string GetName() const { return Name; }
 
@@ -101,11 +101,14 @@ private:
 class TeamManager
 {
 public:
-	void GenerateNewTeam(Team team);
+	TeamManager() {};
+	void GenerateNewTeam(Team);
 	std::string GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager);
+	std::list<Team> GetTeamList() { return TeamList; };
 
 private:
 	std::list<Team> TeamList;
+	PlayerManager* playerManager;
 };
 
 class Session

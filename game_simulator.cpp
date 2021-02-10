@@ -1,12 +1,15 @@
 ﻿#include <iostream>
 #include <string>
 #include "View.h"
+#include <ctime>
 
 
 using namespace std;
 
 int main()
 {
+	srand(time(NULL));
+
 	PlayerManager playerManager;
 	playerManager.CreatePlayer(1, "anime", 1200);
 	playerManager.CreatePlayer(2, "plr1", 1200);
@@ -30,6 +33,18 @@ int main()
 	heroManager.CreateHero(9, "raven", 155, 145);
 	heroManager.CreateHero(10, "imouto", 120, 120);
 	TeamManager teamManager;
+	Player tempPlayerArr[] = { playerManager.GetPlayerById(1),
+								playerManager.GetPlayerById(3),
+								playerManager.GetPlayerById(5),
+								playerManager.GetPlayerById(7),
+								playerManager.GetPlayerById(9)};
+	teamManager.GenerateNewTeam(Team("amerika", tempPlayerArr, heroManager.GetHeroList()));
+	tempPlayerArr[0] = playerManager.GetPlayerById(2);
+	tempPlayerArr[1] = playerManager.GetPlayerById(4);
+	tempPlayerArr[2] = playerManager.GetPlayerById(6);
+	tempPlayerArr[3] = playerManager.GetPlayerById(8);
+	tempPlayerArr[4] = playerManager.GetPlayerById(10);
+	teamManager.GenerateNewTeam(Team("anglia", tempPlayerArr, heroManager.GetHeroList()));
 	GameManager gameManager;
 	Controller controller(playerManager,heroManager,teamManager,gameManager);
 	View view(controller);

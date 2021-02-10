@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
+#include <ctime>
 #include "Model.h"
 
 
@@ -101,11 +103,24 @@
 		return "error";
 	}
 
-	Team::Team(std::string Name, TeamPlayer players[])
+	Team::Team(std::string Name, Player players[], std::list<Hero> heroList)
 	{
+		std::vector<Hero> newHeroList;			//перетворюю список в вектор для вибору випадкового героя
+		while (!heroList.empty())
+		{
+			newHeroList.push_back(heroList.front());
+			heroList.pop_front();
+		}
+
 		this->Name = Name;
+		int temp;
 		for (int i = 0; i < 5; ++i)
-			this->players[i] = players[i];
+		{	
+			temp = rand() % newHeroList.size();
+			this->players[i].player = players[i];
+			this->players[i].hero = newHeroList[temp];
+			newHeroList.erase(newHeroList.begin() + temp);
+		}
 	}
 
 	void TeamManager::GenerateNewTeam(Team team)
@@ -118,9 +133,9 @@
 		for (Team team : TeamList)
 			if (team.GetName() == Name)
 			{
-				rez = "|\t\t\t\t\t\t\t" + Name + "\t\t\t\t\t|\n";
+				rez = "|  Id\t|   Name\t|   Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
 				for (int i = 0; i < 5; ++i)
-					rez += PlayerManager.ShowPlayerInfo(team.GetPlayer(i).player->GetId()) + HeroManager.ShowHeroInfo(team.GetPlayer(i).hero->GetId()) + '\n';
+					rez += PlayerManager.ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager.ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
 				break;
 			}
 		return rez;
@@ -137,8 +152,8 @@
 		int TeamTwoHP = 0;
 		for (int i = 0; i < 5; ++i)
 		{
-			TeamOneHP += TeamOne->GetPlayer(i).hero->GetHP() - TeamTwo->GetPlayer(i).hero->GetDamage();
-			TeamTwoHP += TeamTwo->GetPlayer(i).hero->GetHP() - TeamOne->GetPlayer(i).hero->GetDamage();
+			TeamOneHP += TeamOne->GetPlayer(i).hero.GetHP() - TeamTwo->GetPlayer(i).hero.GetDamage();
+			TeamTwoHP += TeamTwo->GetPlayer(i).hero.GetHP() - TeamOne->GetPlayer(i).hero.GetDamage();
 		}
 		Winner = (TeamOneHP > TeamTwoHP) ? TeamOne : TeamTwo;
 	}
