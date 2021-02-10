@@ -50,6 +50,8 @@ std::string Controller::GetSessionList()
 	std::string rez = "\n";
 	for (Session session : gameManager->GetGameSessions())
 		rez += session.GetSessionInformation() + "\n";
+	if (gameManager->GetGameSessions().empty())
+		rez = "\nNo games to display\n";
 	return rez;
 }
 

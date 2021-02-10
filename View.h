@@ -7,7 +7,7 @@ public:
 	View() {};
 	View(Controller controller) { this->controller = controller; }
 
-	void MainMenu();
+	bool MainMenu();
 	void PlayerList();
 	void HeroList();
 	void TeamList();

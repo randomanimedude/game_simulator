@@ -49,8 +49,10 @@ int main()
 	Controller controller(playerManager,heroManager,teamManager,gameManager);
 	View view(controller);
 
-	while (1)
+	bool oneMoreTimeOneMoreChance;
+	
+	do
 	{
-		view.MainMenu();
-	}
+		oneMoreTimeOneMoreChance = view.MainMenu();
+	} while (oneMoreTimeOneMoreChance);
 }
