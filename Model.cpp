@@ -146,6 +146,7 @@
 			if (team.GetName() == Name)
 			{
 				rez += "|  Id\t|   Name\t|  Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
+				rez += "|_______________________________||______________________________________|\n";
 				for (int i = 0; i < 5; ++i)
 					rez += PlayerManager->ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager->ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
 				break;
@@ -158,6 +159,7 @@
 		
 		rez = "|\t  Player info  \t\t||\t\tHero info\t\t|\n";
 		rez += "|  Id\t|   Name\t|  Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
+		rez += "|_______________________________||______________________________________|\n";
 		for (int i = 0; i < 5; ++i)
 			rez += PlayerManager->ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager->ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
 		return rez;

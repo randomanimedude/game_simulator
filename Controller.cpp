@@ -12,10 +12,10 @@ Controller::Controller(PlayerManager &playerManager, HeroManager &heroManager, T
 
 std::string Controller::GetPlayerList()
 {
-	std::string rez="\n _______________________________________\n|  Id\t|   Name\t|   Rank\t|\n|_______________________________________|\n";
+	std::string rez="\n _______________________________\n|  Id\t|   Name\t| Rank\t|\n|_______________________________|\n";
 	for (auto player : playerManager->GetPlayerList())
 		rez += playerManager->ShowPlayerInfo(player.GetId()) + '\n';
-	rez += "|_______________________________________|\n";
+	rez += "|_______________________________|\n";
 	if (playerManager->GetPlayerList().empty())
 		rez = "\nPlayer list is empty!\n\n";
 	return rez;
