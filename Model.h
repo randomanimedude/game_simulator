@@ -47,6 +47,8 @@ public:
 	void CreatePlayer(int, std::string, int);
 	void DeletePlayer(int);
 
+	std::list<Player> GetPlayerList() { return PlayerList; }
+
 	Player GetPlayerByName(std::string);
 	Player GetPlayerById(int);
 
@@ -63,6 +65,8 @@ public:
 	void CreateHero(int, std::string, int, int);
 	void DeleteHero(int);
 
+	std::list<Hero> GetHeroList() { return HeroList; }
+
 	Hero GetHeroByName(std::string);
 	Hero GetHeroById(int);
 
@@ -76,13 +80,14 @@ struct TeamPlayer
 {
 	TeamPlayer() {};
 
-	const Hero* hero;
-	const Player* player;
+	Hero hero;
+	Player player;
 };
 class Team
 {
 public:
-	Team(std::string, TeamPlayer[]);
+	Team() {};
+	Team(std::string, Player[], std::list<Hero>);
 
 	std::string GetName() const { return Name; }
 
@@ -97,8 +102,11 @@ private:
 class TeamManager
 {
 public:
-	void GenerateNewTeam(Team team);
+	TeamManager() {};
+	void GenerateNewTeam(Team);
+	void DeleteTeamByName(std::string);
 	std::string GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager);
+	std::list<Team> GetTeamList() { return TeamList; };
 
 private:
 	std::list<Team> TeamList;
@@ -107,25 +115,27 @@ private:
 class Session
 {
 public:
-	Session(const Team&, const Team&);
+	Session() {};
+	Session(Team, Team);
 
-	void CalculateWinner();
+	void CalculateWinner(std::string time);
 
 	std::string GetWinnerInformation();
 	std::string GetSessionInformation();
 
 private:
 	std::string StartTime;
-	const Team* TeamOne;
-	const Team* TeamTwo;
-	const Team* Winner;
+	Team TeamOne;
+	Team TeamTwo;
+	Team Winner;
 
 };
 
 class GameManager
 {
 public:
-	void PerformGameSession(const Team&, const Team&);
+	void PerformGameSession(Team, Team);
+	std::list<Session> GetGameSessions() { return GameSessions; }
 
 private:
 	std::list<Session> GameSessions;

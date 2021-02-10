@@ -18,12 +18,24 @@
     <ClCompile Include="game_simulator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
     <ClCompile Include="Model.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="View.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="View.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
