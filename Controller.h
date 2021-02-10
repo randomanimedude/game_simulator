@@ -10,13 +10,13 @@ public:
 	std::string GetHeroList();
 	std::string GetTeamList();
 	std::string GetSessionList();
-	void AddNewPlayer();
-	void AddNewHero();
-	void AddNewTeam();
+	void AddNewPlayer(int, std::string);
+	void AddNewHero(int, std::string, int, int);
+	void AddNewTeam(std::string, int[]);
 	void AddNewSession();
-	void DeletePlayer();
-	void DeleteHero();
-	void DeleteTeam();
+	void DeletePlayer(int);
+	void DeleteHero(int);
+	void DeleteTeam(std::string);
 
 private:
 	PlayerManager *playerManager;

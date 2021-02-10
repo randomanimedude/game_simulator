@@ -6,7 +6,7 @@ using namespace std;
 
 void View::MainMenu()
 {
-	cout << "1)Player list\n"
+	cout << "\n\n1)Player list\n"
 		<< "2)Hero list\n"
 		<< "3)Team list\n"
 		<< "4)Session list\n"
@@ -40,13 +40,23 @@ void View::PlayerList()
 									<<"Choise: ";
 	char input;
 	cin >> input;
+	std::string name;
+	int id;
 	switch (input)
 	{
 	case '1':
-		controller.AddNewPlayer();
+		cout << "Id: ";
+		cin >> id;
+		cout << "Name: ";
+		cin >> name;
+		controller.AddNewPlayer(id, name);
+		PlayerList();
 		break;
 	case '2':
-		controller.DeletePlayer();
+		cout << "Id: ";
+		cin >> id;
+		controller.DeletePlayer(id);
+		PlayerList();
 	}
 }
 
@@ -58,13 +68,27 @@ void View::HeroList()
 		<< "Choise: ";
 	char input;
 	cin >> input;
+	std::string name;
+	int id,hp,dmg;
 	switch (input)
 	{
 	case '1':
-		controller.AddNewHero();
+		cout << "Id: ";
+		cin >> id;
+		cout << "Name: ";
+		cin >> name;
+		cout << "HP: ";
+		cin >> hp;
+		cout << "DMG: ";
+		cin >> dmg;
+		controller.AddNewHero(id, name, hp, dmg);
+		HeroList();
 		break;
 	case '2':
-		controller.DeleteHero();
+		cout << "Id: ";
+		cin >> id;
+		controller.DeleteHero(id);
+		HeroList();
 	}
 }
 
@@ -76,13 +100,26 @@ void View::TeamList()
 		<< "Choise: ";
 	char input;
 	cin >> input;
+	string name;
+	int playerId[5];
 	switch (input)
 	{
 	case '1':
-		controller.AddNewTeam();
+		cout << "Team Name: ";
+		cin >> name;
+		for (int i = 0; i < 5; ++i)
+		{
+			cout << "Player " << i << " Id: ";
+			cin >> playerId[i];
+		}
+		controller.AddNewTeam(name, playerId);
+		TeamList();
 		break;
 	case '2':
-		controller.DeleteTeam();
+		cout << "Team Name: ";
+		cin >> name;
+		controller.DeleteTeam(name);
+		TeamList();
 	}
 }
 

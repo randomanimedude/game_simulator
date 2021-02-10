@@ -127,6 +127,15 @@
 	{
 		TeamList.push_back(team);
 	}
+	void TeamManager::DeleteTeamByName(std::string name)
+	{
+		for (std::list<Team>::iterator it = TeamList.begin(); it != TeamList.end(); ++it)
+			if (it->GetName() == name)
+			{
+				TeamList.erase(it);
+				break;
+			}
+	}
 	std::string TeamManager::GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager)
 	{
 		std::string rez;

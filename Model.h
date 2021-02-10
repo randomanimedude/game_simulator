@@ -103,6 +103,7 @@ class TeamManager
 public:
 	TeamManager() {};
 	void GenerateNewTeam(Team);
+	void DeleteTeamByName(std::string);
 	std::string GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager);
 	std::list<Team> GetTeamList() { return TeamList; };
 
