@@ -61,7 +61,7 @@
 	{
 		for (Player player : PlayerList)
 			if (player.GetId() == Id)
-				return "|   " + std::to_string(Id) + "\t|   " + player.GetName() + "\t|   " + std::to_string(player.GetRank()) + "\t|";
+				return "|   " + std::to_string(Id) + "\t|   " + player.GetName() + "\t|  " + std::to_string(player.GetRank()) + "\t|";
 		return "error";
 	}
 
@@ -137,17 +137,29 @@
 				break;
 			}
 	}
-	std::string TeamManager::GetTeamInfo(std::string Name, const PlayerManager& PlayerManager, const HeroManager& HeroManager)
+	std::string TeamManager::GetTeamInfo(std::string Name, const PlayerManager* PlayerManager, const HeroManager* HeroManager)
 	{
 		std::string rez;
+
+		rez = "|\t  Player info  \t\t||\t     Last played hero\t\t|\n";
 		for (Team team : TeamList)
 			if (team.GetName() == Name)
 			{
-				rez = "|  Id\t|   Name\t|   Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
+				rez += "|  Id\t|   Name\t|  Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
 				for (int i = 0; i < 5; ++i)
-					rez += PlayerManager.ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager.ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
+					rez += PlayerManager->ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager->ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
 				break;
 			}
+		return rez;
+	}
+	std::string TeamManager::GetTeamInfo(Team team, const PlayerManager* PlayerManager, const HeroManager* HeroManager)
+	{
+		std::string rez;
+		
+		rez = "|\t  Player info  \t\t||\t\tHero info\t\t|\n";
+		rez += "|  Id\t|   Name\t|  Rank\t||  Id\t|  Hero Name\t|  HP\t|  DMG\t|\n";
+		for (int i = 0; i < 5; ++i)
+			rez += PlayerManager->ShowPlayerInfo(team.GetPlayer(i).player.GetId()) + HeroManager->ShowHeroInfo(team.GetPlayer(i).hero.GetId()) + '\n';
 		return rez;
 	}
 
@@ -168,13 +180,21 @@
 		}
 		Winner = (TeamOneHP > TeamTwoHP) ? TeamOne : TeamTwo;
 	}
+	Team Session::GetTeamOne()
+	{
+		return TeamOne;
+	}
+	Team Session::GetTeamTwo()
+	{
+		return TeamTwo;
+	}
 	std::string Session::GetWinnerInformation()
 	{
-		return "|\t\t\t\tTeam " + Winner.GetName() + " is Victorious!\t\t\t\t|";
+		return "|\t\t   Team " + Winner.GetName() + " is Victorious!\t\t\t\t|";
 	}
 	std::string Session::GetSessionInformation()
 	{
-		return "|\t" + StartTime + "\t|\t" + TeamOne.GetName() + " " + ((TeamOne.GetName() == Winner.GetName()) ? "(win)" : "(lose)") + " vs " + TeamTwo.GetName() + " " + ((TeamTwo.GetName() == Winner.GetName()) ? "(win)" : "(lose)")+"\t|";
+		return "|    " + StartTime + "\t||\t" + TeamOne.GetName() + " " + ((TeamOne.GetName() == Winner.GetName()) ? "(win)" : "(lose)") + " vs " + TeamTwo.GetName() + " " + ((TeamTwo.GetName() == Winner.GetName()) ? "(win)" : "(lose)")+"\t|";
 	}
 
 	void GameManager::PerformGameSession(Team TeamOne, Team TeamTwo)
