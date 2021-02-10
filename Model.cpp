@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <ctime>
+#include <string>
 #include "Model.h"
 
 
@@ -150,35 +151,42 @@
 		return rez;
 	}
 
-	Session::Session(const Team& TeamOne, const Team& TeamTwo)
+	Session::Session(Team TeamOne, Team TeamTwo)
 	{
-		this->TeamOne = &TeamOne;
-		this->TeamTwo = &TeamTwo;
+		this->TeamOne = TeamOne;
+		this->TeamTwo = TeamTwo;
 	}
-	void Session::CalculateWinner()
+	void Session::CalculateWinner(std::string time)
 	{
+		this->StartTime = time;
 		int TeamOneHP = 0;
 		int TeamTwoHP = 0;
 		for (int i = 0; i < 5; ++i)
 		{
-			TeamOneHP += TeamOne->GetPlayer(i).hero.GetHP() - TeamTwo->GetPlayer(i).hero.GetDamage();
-			TeamTwoHP += TeamTwo->GetPlayer(i).hero.GetHP() - TeamOne->GetPlayer(i).hero.GetDamage();
+			TeamOneHP += TeamOne.GetPlayer(i).hero.GetHP() - TeamTwo.GetPlayer(i).hero.GetDamage();
+			TeamTwoHP += TeamTwo.GetPlayer(i).hero.GetHP() - TeamOne.GetPlayer(i).hero.GetDamage();
 		}
 		Winner = (TeamOneHP > TeamTwoHP) ? TeamOne : TeamTwo;
 	}
 	std::string Session::GetWinnerInformation()
 	{
-		return "|\t\t\t\tTeam " + Winner->GetName() + " is Victorious!\t\t\t\t|";
+		return "|\t\t\t\tTeam " + Winner.GetName() + " is Victorious!\t\t\t\t|";
 	}
 	std::string Session::GetSessionInformation()
 	{
-		return "|\t" + StartTime + "\t|\t" + TeamOne->GetName() + " " + ((TeamOne == Winner) ? "(win)" : "(lose)") + " vs " + TeamTwo->GetName() + " " + ((TeamTwo == Winner) ? "(win)" : "(lose)")+"\t|";
+		return "|\t" + StartTime + "\t|\t" + TeamOne.GetName() + " " + ((TeamOne.GetName() == Winner.GetName()) ? "(win)" : "(lose)") + " vs " + TeamTwo.GetName() + " " + ((TeamTwo.GetName() == Winner.GetName()) ? "(win)" : "(lose)")+"\t|";
 	}
 
-	void GameManager::PerformGameSession(const Team& TeamOne, const Team& TeamTwo)
+	void GameManager::PerformGameSession(Team TeamOne, Team TeamTwo)
 	{
+		time_t result = time(NULL);			//some time-string cheats
+		char str[26];
+		ctime_s(str, sizeof str, &result);
+		std::string timeRez = str;
+		timeRez = timeRez.substr(0, 24);
+
 		GameSessions.push_back(Session(TeamOne, TeamTwo));
-		GameSessions.back().CalculateWinner();
+		GameSessions.back().CalculateWinner(timeRez);
 	}
 
 

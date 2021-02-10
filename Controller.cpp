@@ -47,7 +47,10 @@ std::string Controller::GetTeamList()
 
 std::string Controller::GetSessionList()
 {
-	return " ";
+	std::string rez = "\n";
+	for (Session session : gameManager->GetGameSessions())
+		rez += session.GetSessionInformation() + "\n";
+	return rez;
 }
 
 void Controller::AddNewPlayer(int Id, std::string Name)
@@ -70,9 +73,17 @@ void Controller::AddNewTeam(std::string Name, int PlayerId[])
 	teamManager->GenerateNewTeam(Team(Name, newTeamPlayers, heroManager->GetHeroList()));
 }
 
-void Controller::AddNewSession()
+void Controller::AddNewSession(std::string teamOne, std::string teamTwo)
 {
-
+	Team team1, team2;							//searching for teams by name
+	for(Team team: teamManager->GetTeamList())
+	{
+		if (team.GetName() == teamOne)
+			team1 = team;
+		if (team.GetName() == teamTwo)
+			team2 = team;
+	}
+	gameManager->PerformGameSession(team1, team2);
 }
 
 void Controller::DeletePlayer(int Id)

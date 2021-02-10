@@ -13,7 +13,7 @@ public:
 	void AddNewPlayer(int, std::string);
 	void AddNewHero(int, std::string, int, int);
 	void AddNewTeam(std::string, int[]);
-	void AddNewSession();
+	void AddNewSession(std::string, std::string);
 	void DeletePlayer(int);
 	void DeleteHero(int);
 	void DeleteTeam(std::string);

@@ -125,9 +125,17 @@ void View::TeamList()
 
 void View::SessionList()
 {
-	cout << controller.GetSessionList() << "Play new Match?(Y/N): ";
+	cout << controller.GetSessionList() << "\nPlay new Match?(Y/N): ";
 	char input;
 	cin >> input;
+	std::string teamOne, teamTwo;
 	if (input == 'y' || input == 'Y')
-		controller.AddNewSession();
+	{
+		cout << "Team One: ";
+		cin >> teamOne;
+		cout << "Team Two: ";
+		cin >> teamTwo;
+		controller.AddNewSession(teamOne, teamTwo);
+		SessionList();
+	}
 }

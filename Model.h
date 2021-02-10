@@ -86,6 +86,7 @@ struct TeamPlayer
 class Team
 {
 public:
+	Team() {};
 	Team(std::string, Player[], std::list<Hero>);
 
 	std::string GetName() const { return Name; }
@@ -109,31 +110,32 @@ public:
 
 private:
 	std::list<Team> TeamList;
-	PlayerManager* playerManager;
 };
 
 class Session
 {
 public:
-	Session(const Team&, const Team&);
+	Session() {};
+	Session(Team, Team);
 
-	void CalculateWinner();
+	void CalculateWinner(std::string time);
 
 	std::string GetWinnerInformation();
 	std::string GetSessionInformation();
 
 private:
 	std::string StartTime;
-	const Team* TeamOne;
-	const Team* TeamTwo;
-	const Team* Winner;
+	Team TeamOne;
+	Team TeamTwo;
+	Team Winner;
 
 };
 
 class GameManager
 {
 public:
-	void PerformGameSession(const Team&, const Team&);
+	void PerformGameSession(Team, Team);
+	std::list<Session> GetGameSessions() { return GameSessions; }
 
 private:
 	std::list<Session> GameSessions;
