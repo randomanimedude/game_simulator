@@ -10,6 +10,7 @@ public:
 	std::string GetHeroList();
 	std::string GetTeamList();
 	std::string GetSessionList();
+	int GetNumberOfHeroes() { return heroManager->GetHeroList().size(); }
 	bool AddNewSession(std::string, std::string);
 	void AddNewPlayer(int, std::string);
 	void AddNewHero(int, std::string, int, int);

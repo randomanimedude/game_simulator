@@ -13,11 +13,6 @@
 		this->Name = Name;
 		this->Rank = Rank;
 	}
-	void Player::ChangeRank(int dif) 
-	{ 
-		Rank += dif; 
-	}
-
 	Hero::Hero(int Id, std::string Name, int HP, int Damage)
 	{
 		this->Id = Id;
@@ -25,6 +20,11 @@
 		this->HP = HP;
 		this->Damage = Damage;
 	}
+	void Player::ChangeRank(int dif)
+	{
+		Rank += dif;
+	}
+
 
 	void PlayerManager::CreatePlayer(Player player)
 	{
@@ -42,6 +42,12 @@
 				PlayerList.erase(it);
 				break;
 			}
+	}
+	void PlayerManager::ChangePlayerRank(int Id, int dif)
+	{
+		for (Player& player : PlayerList)
+			if (player.GetId() == Id)
+				player.ChangeRank(dif);
 	}
 	Player PlayerManager::GetPlayerByName(std::string Name)
 	{
@@ -98,12 +104,10 @@
 	}
 	std::string HeroManager::ShowHeroInfo(int Id) const
 	{
-		if (Id == -1)
-			return "|\t    No Hero To display\t\t|";
 		for (Hero hero : HeroList)
 			if (hero.GetId() == Id)
 				return "|   " + std::to_string(Id) + "\t|   " + hero.GetName() + "\t|  " + std::to_string(hero.GetHP()) + "\t|  " + std::to_string(hero.GetDamage()) + "\t|";
-		return "error";
+		return "|\t    No Hero To display\t\t|";
 	}
 
 	Team::Team(std::string Name, Player players[])
@@ -130,7 +134,7 @@
 		for (std::list<Team>::iterator it = TeamList.begin(); it != TeamList.end(); ++it)
 			if (it->GetName() == name)
 			{
-				TeamList.erase(it);
+				this->TeamList.erase(it);
 				break;
 			}
 	}
@@ -207,6 +211,10 @@
 	{
 		return TeamTwo;
 	}
+	Team Session::GetWinner()
+	{
+		return Winner;
+	}
 	std::string Session::GetWinnerInformation()
 	{
 		return "|\t\t   Team " + Winner.GetName() + " is Victorious!\t\t\t\t|";
@@ -217,9 +225,10 @@
 	}
 
 
-	GameManager::GameManager(HeroManager& heroManager)
+	GameManager::GameManager(HeroManager& heroManager, PlayerManager& playerManager)
 	{
 		this->heroManager = &heroManager;
+		this->playerManager = &playerManager;
 	}
 	void GameManager::PerformGameSession(Team *TeamOne, Team *TeamTwo)
 	{
@@ -231,6 +240,14 @@
 
 		GameSessions.push_back(Session(TeamOne, TeamTwo, heroManager->GetHeroList()));
 		GameSessions.back().CalculateWinner(timeRez);
+		if (GameSessions.back().GetTeamOne().GetName() != GameSessions.back().GetWinner().GetName())
+			for (int i = 0; i < 5; ++i)
+				playerManager->ChangePlayerRank(GameSessions.back().GetTeamOne().GetPlayer(i).player.GetId(), -25);
+		else 
+			for (int i = 0; i < 5; ++i)
+				playerManager->ChangePlayerRank(GameSessions.back().GetTeamTwo().GetPlayer(i).player.GetId(), -25);
+		for (int i = 0; i < 5; ++i)
+			playerManager->ChangePlayerRank(GameSessions.back().GetWinner().GetPlayer(i).player.GetId(), 25);
 	}
 
 

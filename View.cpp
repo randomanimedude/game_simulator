@@ -173,22 +173,27 @@ void View::SessionList()
 	bool repeat;
 	do {
 		repeat = false;
-		cout << "\nPlay new Match?(Y/N): ";
-		cin >> input;
-		if (input == 'y' || input == 'Y')
+		if (controller.GetNumberOfHeroes() < 10)
+			cout << "You need 10 or more heroes to play" << endl;
+		else
 		{
-			cout << "Team One: ";
-			cin >> teamOne;
-			cout << "Team Two: ";
-			cin >> teamTwo;
-			if (controller.AddNewSession(teamOne, teamTwo))
-				cout << "Failed to find a team";
-			SessionList();
-		}
-		else if (input != 'n' && input != 'N')
-		{
-			repeat = true;
-			cout << "Try again" << endl << endl;
+			cout << "\nPlay new Match?(Y/N): ";
+			cin >> input;
+			if (input == 'y' || input == 'Y')
+			{
+				cout << "Team One: ";
+				cin >> teamOne;
+				cout << "Team Two: ";
+				cin >> teamTwo;
+				if (controller.AddNewSession(teamOne, teamTwo))
+					cout << "Failed to find a team or both teams has the same player";
+				SessionList();
+			}
+			else if (input != 'n' && input != 'N')
+			{
+				repeat = true;
+				cout << "Try again" << endl << endl;
+			}
 		}
 	} while (repeat);
 

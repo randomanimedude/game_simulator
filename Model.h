@@ -46,6 +46,7 @@ public:
 	void CreatePlayer(Player);
 	void CreatePlayer(int, std::string, int);
 	void DeletePlayer(int);
+	void ChangePlayerRank(int, int);
 
 	std::list<Player> GetPlayerList() { return PlayerList; }
 
@@ -125,6 +126,7 @@ public:
 
 	Team GetTeamOne();
 	Team GetTeamTwo();
+	Team GetWinner();
 	std::string GetWinnerInformation();
 	std::string GetSessionInformation();
 
@@ -139,12 +141,13 @@ private:
 class GameManager
 {
 public:
-	GameManager(HeroManager&);
+	GameManager(HeroManager&, PlayerManager&);
 
 	void PerformGameSession(Team*, Team*);
 	std::list<Session> GetGameSessions() { return GameSessions; }
 
 private:
+	PlayerManager* playerManager;
 	HeroManager* heroManager;
 	std::list<Session> GameSessions;
 

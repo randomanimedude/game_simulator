@@ -21,6 +21,7 @@ std::string Controller::GetPlayerList()
 	return rez;
 }
 
+
 std::string Controller::GetHeroList()
 {
 	std::string rez = "\n _______________________________________\n|  Id\t|   Name\t|  HP\t|  DMG\t|\n|_______________________________________|\n";
@@ -86,40 +87,60 @@ void Controller::AddNewTeam(std::string Name, int PlayerId[])
 
 bool Controller::AddNewSession(std::string teamOne, std::string teamTwo)
 {
-	int counter = 0;
+	bool t1 = false;
+	bool t2 = false;
 
-	Team* team1, * team2 = team1 = new Team;							//searching for teams by name
+	bool uni = true;
+
+	Team* team1 = new Team;
+	Team* team2 = new Team;							//searching for teams by name
 	for(Team &team: *(teamManager->GetTeamList()))
 	{
 		if (team.GetName() == teamOne)
 		{
+			delete team1;
 			team1 = &team;
-			++counter;
+			t1 = true;
 		}
 		if (team.GetName() == teamTwo)
 		{
+			delete team2;
 			team2 = &team;
-			++counter;
+			t2 = true;
 		}
 	}
-	if (counter == 2)
+	if (t1 && t2)
 	{
-		gameManager->PerformGameSession(team1, team2);
-		return false;
+		for (int i = 0; i < 5; ++i)
+			for (int j = 0; j < 5; ++j)
+				if (team1->GetPlayer(i).player.GetId() == team2->GetPlayer(j).player.GetId()) //check if players are unique
+					uni = false;
+
+		if (uni)
+		{
+			gameManager->PerformGameSession(team1, team2);
+			return false;
+		}
 	}
-	delete team1;
-	delete team2;
+	if (!t1)
+		delete team1;
+	if (!t2)
+		delete team2;
 	return true;
 
 }
 
 void Controller::DeletePlayer(int Id)
 {
-	playerManager->DeletePlayer(Id);
-	for (Team team : *(teamManager->GetTeamList()))
+	std::list<Team> copy = *(teamManager->GetTeamList());			//made a copy to fix crash
+	for (Team team : copy)
 		for (int i = 0; i < 5; ++i)
 			if (team.GetPlayer(i).player.GetId() == Id)
+			{
 				teamManager->DeleteTeamByName(team.GetName());			//delete team if player of this team is deleted
+				break;
+			}
+	playerManager->DeletePlayer(Id);
 }
 
 void Controller::DeleteHero(int Id)

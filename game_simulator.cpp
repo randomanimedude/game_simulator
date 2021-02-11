@@ -45,12 +45,16 @@ int main()
 	tempPlayerArr[3] = playerManager.GetPlayerById(8);
 	tempPlayerArr[4] = playerManager.GetPlayerById(10);
 	teamManager.GenerateNewTeam(Team("anglia", tempPlayerArr));
-	GameManager gameManager(heroManager);
+	GameManager gameManager(heroManager,playerManager);
 	Controller controller(playerManager, heroManager, teamManager, gameManager);
 	View view(controller);
 
 	bool oneMoreTimeOneMoreChance;
 	
+
+
+
+
 	do
 	{
 		oneMoreTimeOneMoreChance = view.MainMenu();
