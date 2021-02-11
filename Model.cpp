@@ -98,31 +98,28 @@
 	}
 	std::string HeroManager::ShowHeroInfo(int Id) const
 	{
+		if (Id == -1)
+			return "|\t    No Hero To display\t\t|";
 		for (Hero hero : HeroList)
 			if (hero.GetId() == Id)
 				return "|   " + std::to_string(Id) + "\t|   " + hero.GetName() + "\t|  " + std::to_string(hero.GetHP()) + "\t|  " + std::to_string(hero.GetDamage()) + "\t|";
 		return "error";
 	}
 
-	Team::Team(std::string Name, Player players[], std::list<Hero> heroList)
+	Team::Team(std::string Name, Player players[])
 	{
-		std::vector<Hero> newHeroList;			//перетворюю список в вектор для вибору випадкового героя
-		while (!heroList.empty())
-		{
-			newHeroList.push_back(heroList.front());
-			heroList.pop_front();
-		}
-
 		this->Name = Name;
-		int temp;
 		for (int i = 0; i < 5; ++i)
 		{	
-			temp = rand() % newHeroList.size();
 			this->players[i].player = players[i];
-			this->players[i].hero = newHeroList[temp];
-			newHeroList.erase(newHeroList.begin() + temp);
+			this->players[i].hero = Hero(-1, "\t-\t", 0, 0);
 		}
 	}
+	void Team::SetPlayerHero(int index, Hero hero)
+	{
+		players[index].hero = hero;
+	}
+
 
 	void TeamManager::GenerateNewTeam(Team team)
 	{
@@ -165,13 +162,33 @@
 		return rez;
 	}
 
-	Session::Session(Team TeamOne, Team TeamTwo)
+	Session::Session(Team* TeamOne, Team* TeamTwo, std::list<Hero> heroList)
 	{
-		this->TeamOne = TeamOne;
-		this->TeamTwo = TeamTwo;
+		std::vector<Hero> heroVector;			//vector for randomising geroes
+		while (!heroList.empty())
+		{
+			heroVector.push_back(heroList.front());
+			heroList.pop_front();
+		}
+
+		int t;
+		for (int i = 0; i < 5; ++i)						//setting random heroes before session
+		{
+			t = rand() % heroVector.size();
+			TeamOne->SetPlayerHero(i, heroVector[t]);
+			heroVector.erase(heroVector.begin() + t);
+
+			t = rand() % heroVector.size();
+			TeamTwo->SetPlayerHero(i, heroVector[t]);
+			heroVector.erase(heroVector.begin() + t);
+		}
+
+		this->TeamOne = *TeamOne;					//copying teams for session history
+		this->TeamTwo = *TeamTwo;
 	}
 	void Session::CalculateWinner(std::string time)
 	{
+		
 		this->StartTime = time;
 		int TeamOneHP = 0;
 		int TeamTwoHP = 0;
@@ -199,15 +216,20 @@
 		return "|    " + StartTime + "\t||\t" + TeamOne.GetName() + " " + ((TeamOne.GetName() == Winner.GetName()) ? "(win)" : "(lose)") + " vs " + TeamTwo.GetName() + " " + ((TeamTwo.GetName() == Winner.GetName()) ? "(win)" : "(lose)")+"\t|";
 	}
 
-	void GameManager::PerformGameSession(Team TeamOne, Team TeamTwo)
+
+	GameManager::GameManager(HeroManager& heroManager)
 	{
-		time_t result = time(NULL);			//some time-string cheats
+		this->heroManager = &heroManager;
+	}
+	void GameManager::PerformGameSession(Team *TeamOne, Team *TeamTwo)
+	{
+		time_t result = time(NULL);			//some time-to-string cheats
 		char str[26];
 		ctime_s(str, sizeof str, &result);
 		std::string timeRez = str;
 		timeRez = timeRez.substr(0, 24);
 
-		GameSessions.push_back(Session(TeamOne, TeamTwo));
+		GameSessions.push_back(Session(TeamOne, TeamTwo, heroManager->GetHeroList()));
 		GameSessions.back().CalculateWinner(timeRez);
 	}
 

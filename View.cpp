@@ -181,7 +181,8 @@ void View::SessionList()
 			cin >> teamOne;
 			cout << "Team Two: ";
 			cin >> teamTwo;
-			controller.AddNewSession(teamOne, teamTwo);
+			if (controller.AddNewSession(teamOne, teamTwo))
+				cout << "Failed to find a team";
 			SessionList();
 		}
 		else if (input != 'n' && input != 'N')

@@ -36,11 +36,11 @@ std::string Controller::GetTeamList()
 {
 	std::string rez = "\n";
 	std::string line = "_______________________________________________________________________";
-	for (Team team : teamManager->GetTeamList())
+	for (Team team : *(teamManager->GetTeamList()))
 	{		
 		rez += " " + line + "\n|  \t\t\tTeam\t  " + team.GetName() +"\t\t\t\t|\n|" + line + "|\n" + teamManager->GetTeamInfo(team.GetName(), playerManager, heroManager) + "|" + line + "|\n";
 	}
-	if (teamManager->GetTeamList().empty())
+	if (teamManager->GetTeamList()->empty())
 		rez = "\nTeam list is empty!\n\n";
 	return rez;
 }
@@ -81,26 +81,42 @@ void Controller::AddNewTeam(std::string Name, int PlayerId[])
 	{
 		newTeamPlayers[i] = playerManager->GetPlayerById(PlayerId[i]);
 	}
-	teamManager->GenerateNewTeam(Team(Name, newTeamPlayers, heroManager->GetHeroList()));
+	teamManager->GenerateNewTeam(Team(Name, newTeamPlayers));
 }
 
-void Controller::AddNewSession(std::string teamOne, std::string teamTwo)
+bool Controller::AddNewSession(std::string teamOne, std::string teamTwo)
 {
-	Team team1, team2;							//searching for teams by name
-	for(Team team: teamManager->GetTeamList())
+	int counter = 0;
+
+	Team* team1, * team2 = team1 = new Team;							//searching for teams by name
+	for(Team &team: *(teamManager->GetTeamList()))
 	{
 		if (team.GetName() == teamOne)
-			team1 = team;
+		{
+			team1 = &team;
+			++counter;
+		}
 		if (team.GetName() == teamTwo)
-			team2 = team;
+		{
+			team2 = &team;
+			++counter;
+		}
 	}
-	gameManager->PerformGameSession(team1, team2);
+	if (counter == 2)
+	{
+		gameManager->PerformGameSession(team1, team2);
+		return false;
+	}
+	delete team1;
+	delete team2;
+	return true;
+
 }
 
 void Controller::DeletePlayer(int Id)
 {
 	playerManager->DeletePlayer(Id);
-	for (Team team : teamManager->GetTeamList())
+	for (Team team : *(teamManager->GetTeamList()))
 		for (int i = 0; i < 5; ++i)
 			if (team.GetPlayer(i).player.GetId() == Id)
 				teamManager->DeleteTeamByName(team.GetName());			//delete team if player of this team is deleted

@@ -38,15 +38,15 @@ int main()
 								playerManager.GetPlayerById(5),
 								playerManager.GetPlayerById(7),
 								playerManager.GetPlayerById(9)};
-	teamManager.GenerateNewTeam(Team("amerika", tempPlayerArr, heroManager.GetHeroList()));
+	teamManager.GenerateNewTeam(Team("amerika", tempPlayerArr));
 	tempPlayerArr[0] = playerManager.GetPlayerById(2);
 	tempPlayerArr[1] = playerManager.GetPlayerById(4);
 	tempPlayerArr[2] = playerManager.GetPlayerById(6);
 	tempPlayerArr[3] = playerManager.GetPlayerById(8);
 	tempPlayerArr[4] = playerManager.GetPlayerById(10);
-	teamManager.GenerateNewTeam(Team("anglia", tempPlayerArr, heroManager.GetHeroList()));
-	GameManager gameManager;
-	Controller controller(playerManager,heroManager,teamManager,gameManager);
+	teamManager.GenerateNewTeam(Team("anglia", tempPlayerArr));
+	GameManager gameManager(heroManager);
+	Controller controller(playerManager, heroManager, teamManager, gameManager);
 	View view(controller);
 
 	bool oneMoreTimeOneMoreChance;

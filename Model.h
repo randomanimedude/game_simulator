@@ -87,7 +87,9 @@ class Team
 {
 public:
 	Team() {};
-	Team(std::string, Player[], std::list<Hero>);
+	Team(std::string, Player[]);
+
+	void SetPlayerHero(int, Hero);
 
 	std::string GetName() const { return Name; }
 
@@ -107,7 +109,7 @@ public:
 	void DeleteTeamByName(std::string);
 	std::string GetTeamInfo(std::string, const PlayerManager*, const HeroManager*);
 	std::string GetTeamInfo(Team, const PlayerManager*, const HeroManager*);
-	std::list<Team> GetTeamList() { return TeamList; };
+	std::list<Team>* GetTeamList() { return &TeamList; };
 
 private:
 	std::list<Team> TeamList;
@@ -117,7 +119,7 @@ class Session
 {
 public:
 	Session() {};
-	Session(Team, Team);
+	Session(Team*, Team*, std::list<Hero>);
 
 	void CalculateWinner(std::string time);
 
@@ -137,10 +139,13 @@ private:
 class GameManager
 {
 public:
-	void PerformGameSession(Team, Team);
+	GameManager(HeroManager&);
+
+	void PerformGameSession(Team*, Team*);
 	std::list<Session> GetGameSessions() { return GameSessions; }
 
 private:
+	HeroManager* heroManager;
 	std::list<Session> GameSessions;
 
 };
